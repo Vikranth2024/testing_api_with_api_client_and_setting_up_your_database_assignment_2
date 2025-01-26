@@ -14,10 +14,24 @@ app.post('/books',(req,res) => {
   if (!book_id || !title || !author || !genre || !year || !copies) {
     return res.status(400).json({ error: 'All fields are required' });
   }
-  const newBook = { book_id, title, author, genre, year, copies };
+  const newBook = { 
+    book_id, 
+    title, 
+    author, 
+    genre, 
+    year, 
+    copies 
+  };
+
+
   books.push(newBook);
-  return res.status(201).json(newBook);
+
+  return res.status(201).send("sussess");
+
 })
+
+
+
 
 // Retrieve All Books
 app.get('/books',(req,res)=>{
@@ -34,6 +48,9 @@ app.get('/books/:id',(req,res) => {
   }
   res.status(200).json(book);
 })
+
+
+
 //update a specific book by id
 app.put('/books/:id', (req, res) => {
   const { title, author, genre, year, copies } = req.body;
@@ -63,18 +80,28 @@ app.put('/books/:id', (req, res) => {
   res.status(200).json(book);
 });
 
+
+
+
+
+
 //delete a speccific book by id
 app.delete('/books/:id', (req, res) => {
-  const index = books.find(b => b.book_id === req.params.id);
 
-  if (index === -1) {
-    return res.status(404).json({ error: 'Book not found' });
-  }
+  
+  const index = books.findIndex(b => b.book_id == req.params.id)
 
+  books.splice(index, 1)
 
-  books.splice(index, 1); 
   res.status(200).json({ message: 'Book deleted successfully' });
 });
+
+
+
+
+
+
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
